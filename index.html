@@ -59,7 +59,7 @@ function idleonReport(d){
  out.push('W1 鐵砧點數配置：'+ids.map(i=>'角色'+(i+1)+' '+JSON.stringify(d['AnvilPAstats_'+i]||[])).join('；'));
  out.push('W2 煉金大鍋升級：'+(d.CauldUpgLVs||[]).filter(x=>x>0).length+' 項非零；不代表解鎖狀態');
  out.push('W3 印刷：'+(unpackIdleon(d.Print)||[]).filter(x=>typeof x==='number'&&x>0).length+' 個非零產量值；不代表解鎖狀態');
- out.push('','【新手進度提醒】','1. 首要確認角色 1 的 Scripticus10 主線（Boss 房間）與傳送門需求。','2. 檢查 W1 鐵砧、熔爐、郵票與角色技能培養。','3. 存檔包含 W2～W7 的預設欄位，不能直接推斷已解鎖；世界判斷需另外驗證地圖解鎖紀錄。','4. 角色名稱不在目前這份單獨的 cloudsave 資料內，必須另外匯入 charNames。','','資料分析在瀏覽器本機進行；此報告不會上傳。'];
+ out.push('','【新手進度提醒】','1. 首要確認角色 1 的 Scripticus10 主線（Boss 房間）與傳送門需求。','2. 檢查 W1 鐵砧、熔爐、郵票與角色技能培養。','3. 存檔包含 W2～W7 的預設欄位，不能直接推斷已解鎖；世界判斷需另外驗證地圖解鎖紀錄。','4. 角色名稱不在目前這份單獨的 cloudsave 資料內，必須另外匯入 charNames。','','資料分析在瀏覽器本機進行；此報告不會上傳。');
  return out.join('\n');
 }
 async function importIdleon(){const file=document.getElementById('idleonFile').files[0],status=document.getElementById('idleonStatus');if(!file)return status.textContent='請先選擇 JSON';if(file.size>15e6)return status.textContent='檔案超過 15MB';try{const obj=JSON.parse(await file.text());const data=obj.data&&typeof obj.data==='object'?obj.data:obj;if(!Object.keys(data).some(x=>/^Lv0_\d+$/.test(x)))throw Error('未找到 Lv0_0 等遊戲存檔欄位，請選擇 Raw game data');window.importedIdleon=data;status.textContent='已在本機讀取 Idleon 存檔；以下為可確認的數據和限制';document.getElementById('idleonSummary').textContent=idleonReport(data)}catch(e){status.textContent='解析失敗：'+e.message}}
